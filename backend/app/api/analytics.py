@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.api.dependencies import get_db
+from app.core.database import get_db
 
 router = APIRouter(prefix="/api/analytics", tags=["Analíticas"])
 

@@ -5,7 +5,7 @@ from sqlalchemy.future import select
 from typing import List, Optional
 from uuid import UUID
 
-from app.api.dependencies import get_db
+from app.core.database import get_db
 from app.schemas.recommendation import RecommendationResponse, SmartPauseRequest, SmartPauseResponse, FeedbackRequest
 from app.models.recommendation import Recommendation
 

@@ -5,7 +5,7 @@ from sqlalchemy.future import select
 from typing import List, Dict, Any
 from uuid import UUID
 
-from app.api.dependencies import get_db
+from app.core.database import get_db
 from app.schemas.student import StudentResponse, StudentDetail
 from app.models.student import Student
 from app.models.learning import KnowledgeCard, Concept, Event
