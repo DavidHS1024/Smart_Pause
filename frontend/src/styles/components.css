@@ -1,0 +1,164 @@
+/* Glass Card */
+.glass-card {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  transition: all var(--transition-smooth);
+}
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.badge--platzi { background: rgba(0, 200, 151, 0.15); color: var(--accent-platzi); border: 1px solid rgba(0, 200, 151, 0.3); }
+.badge--ia { background: rgba(0, 180, 255, 0.15); color: var(--accent-ia); border: 1px solid rgba(0, 180, 255, 0.3); }
+.badge--onto { background: rgba(139, 92, 246, 0.15); color: var(--accent-onto); border: 1px solid rgba(139, 92, 246, 0.3); }
+.badge--warning { background: rgba(245, 158, 11, 0.15); color: var(--accent-warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+.badge--danger { background: rgba(239, 68, 68, 0.15); color: var(--accent-danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+  gap: var(--space-2);
+}
+.btn--primary {
+  background: var(--accent-platzi);
+  color: var(--bg-primary);
+}
+.btn--primary:hover {
+  background: #00dfa9;
+  box-shadow: 0 0 15px rgba(0, 200, 151, 0.4);
+}
+.btn--secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--accent-ia);
+}
+.btn--secondary:hover {
+  background: rgba(0, 180, 255, 0.1);
+}
+
+/* Stat Counter */
+.stat-counter {
+  display: flex;
+  flex-direction: column;
+}
+.stat-counter__number {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.stat-counter__label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Timeline */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  position: relative;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--bg-surface);
+}
+.timeline__item {
+  position: relative;
+  padding-left: var(--space-8);
+}
+.timeline__dot {
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  border: 2px solid var(--accent-ia);
+}
+
+/* Code Block */
+.code-block {
+  background: #0D1117;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--bg-surface);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+.code-block__header {
+  background: var(--bg-surface);
+  padding: var(--space-2) var(--space-4);
+  color: var(--text-secondary);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.code-block__content {
+  padding: var(--space-4);
+  overflow-x: auto;
+}
+.token-key { color: var(--accent-ia); }
+.token-string { color: var(--accent-platzi); }
+.token-number { color: var(--accent-warning); }
+
+/* Accordion */
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.accordion__item {
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.accordion__header {
+  padding: var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+}
+.accordion__content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-smooth);
+  padding: 0 var(--space-4);
+}
+.accordion__item.open .accordion__content {
+  max-height: 500px;
+  padding-bottom: var(--space-4);
+}

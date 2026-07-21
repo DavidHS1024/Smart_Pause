@@ -1,0 +1,36 @@
+# Dependencias de Node.js
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Dependencias de Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+
+# Variables de Entorno
+.env
+.env.*
+!.env.example
+
+# IDE y Sistema Operativo
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+
+# Docker y Base de datos local
+pgdata/
+*.log

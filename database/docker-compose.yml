@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: smart_pause_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: smart_pause
+      POSTGRES_USER: smart_pause_user
+      POSTGRES_PASSWORD: smart_pause_dev_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/01_init.sql
+      - ./seed_data.sql:/docker-entrypoint-initdb.d/02_seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smart_pause_user -d smart_pause"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pg_data:
+    driver: local
