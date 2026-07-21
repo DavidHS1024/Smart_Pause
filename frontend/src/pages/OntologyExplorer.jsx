@@ -1,8 +1,12 @@
+import { useRef } from 'react';
 import OntologyGraph from '../components/visualizations/OntologyGraph';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const OntologyExplorer = () => {
+  const mainRef = useRef(null);
+  useScrollAnimation(mainRef);
   return (
-    <div className="container" style={{ paddingTop: '100px', minHeight: '100vh' }}>
+    <div ref={mainRef} className="container" style={{ paddingTop: '100px', minHeight: '100vh' }}>
       <div className="text-center mb-8 gsap-fade-up">
         <h2 className="text-gradient">Explorador de Ontología</h2>
         <p className="text-secondary mt-2">Navega interactivamente por el grafo de conocimiento generado a partir del Modelo SECI.</p>

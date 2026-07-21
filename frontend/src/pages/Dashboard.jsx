@@ -1,9 +1,13 @@
+import { useRef } from 'react';
 import StatCounter from '../components/ui/StatCounter';
 import GlassCard from '../components/ui/GlassCard';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const Dashboard = () => {
+  const mainRef = useRef(null);
+  useScrollAnimation(mainRef);
   return (
-    <div className="container" style={{ paddingTop: '100px', minHeight: '100vh' }}>
+    <div ref={mainRef} className="container" style={{ paddingTop: '100px', minHeight: '100vh' }}>
       <div className="text-center mb-12 gsap-fade-up">
         <h2 className="text-gradient">Métricas del Piloto (Simulación)</h2>
         <p className="text-secondary mt-2">Resultados simulados de la implementación del motor híbrido.</p>

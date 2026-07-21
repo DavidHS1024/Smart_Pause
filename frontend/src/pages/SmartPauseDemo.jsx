@@ -3,8 +3,11 @@ import GlassCard from '../components/ui/GlassCard';
 import Badge from '../components/ui/Badge';
 import { RecommendationsAPI } from '../services/api';
 import gsap from 'gsap';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const SmartPauseDemo = () => {
+  const mainRef = useRef(null);
+  useScrollAnimation(mainRef);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
@@ -69,7 +72,7 @@ const SmartPauseDemo = () => {
   };
 
   return (
-    <div className="container" style={{ paddingTop: '100px', minHeight: '100vh' }}>
+    <div ref={mainRef} className="container" style={{ paddingTop: '100px', minHeight: '100vh' }}>
       <div className="text-center mb-8 gsap-fade-up">
         <h2 className="text-gradient">Demo: Smart Pause</h2>
         <p className="text-secondary mt-2">Simulación de la intervención en tiempo real para el perfil de Sofía (No-Code/Pragmático).</p>
