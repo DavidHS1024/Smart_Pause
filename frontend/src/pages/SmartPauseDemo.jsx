@@ -91,24 +91,24 @@ const SmartPauseDemo = () => {
   };
 
   return (
-    <div ref={mainRef} className="container mx-auto px-4" style={{ paddingTop: '100px', paddingBottom: '60px', minHeight: '100vh', maxWidth: '1600px' }}>
+    <div ref={mainRef} className="container demo-mx-auto demo-px-4" style={{ paddingTop: '100px', paddingBottom: '60px', minHeight: '100vh', maxWidth: '1600px' }}>
       
-      <div className="flex flex-col xl:flex-row gap-6 w-full gsap-fade-up">
+      <div className="demo-flex demo-flex-col demo-layout demo-gap-6 demo-w-full gsap-fade-up">
         
         {/* Left Column: My Courses (20%) */}
-        <div className="hidden xl:flex flex-col gap-6" style={{ flex: '2', minWidth: '250px' }}>
+        <div className="demo-hidden xl:demo-flex demo-flex-col demo-gap-6" style={{ flex: '2', minWidth: '250px' }}>
           <MyCoursesSidebar />
         </div>
         
         {/* Middle Column: Video and Content (55%) */}
-        <div className="flex flex-col gap-6" style={{ flex: '5.5' }}>
+        <div className="demo-flex demo-flex-col demo-gap-6" style={{ flex: '5.5' }}>
           
           {/* Real Video Player */}
-          <div className="relative w-full bg-black rounded-xl overflow-hidden border border-gray-800 shadow-2xl group">
+          <div className="demo-relative demo-w-full demo-bg-black demo-rounded-xl demo-overflow-hidden demo-border demo-border-gray-800 demo-shadow-2xl demo-group">
             
             <video 
               ref={videoRef}
-              className="w-full aspect-video object-cover"
+              className="demo-w-full demo-aspect-video demo-object-cover"
               src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
               onTimeUpdate={handleTimeUpdate}
               onLoadedMetadata={handleLoadedMetadata}
@@ -117,29 +117,29 @@ const SmartPauseDemo = () => {
 
             {/* Smart Pause Overlay */}
             {showPopup && (
-              <div className="absolute inset-0 bg-[#0a1628]/90 backdrop-blur-md flex items-center justify-center p-6 z-20">
-                <GlassCard className="animate-fade-in-up w-full max-w-lg border border-platzi/50 shadow-[0_0_50px_rgba(152,202,63,0.15)] relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-platzi to-ia"></div>
+              <div className="demo-absolute demo-inset-0 demo-bg-dark/90 backdrop-blur-md demo-flex demo-items-center demo-justify-center demo-p-6 demo-z-20">
+                <GlassCard className="animate-fade-in-up demo-w-full demo-max-w-lg demo-border demo-border-platzi/50 shadow-[0_0_50px_rgba(152,202,63,0.15)] demo-relative demo-overflow-hidden">
+                  <div className="demo-absolute demo-top-0 demo-left-0 demo-w-full h-1 demo-bg-gradient-platzi"></div>
                   
-                  <div className="flex justify-between mb-4">
+                  <div className="demo-flex demo-justify-between demo-mb-4">
                     <Badge variant="platzi">💡 SMART PAUSE DETECTADO</Badge>
-                    {recommendation && <span className="text-xs text-platzi font-mono">Confianza: {(recommendation.confidence * 100).toFixed(0)}%</span>}
+                    {recommendation && <span className="demo-text-xs demo-text-platzi demo-font-mono">Confianza: {(recommendation.confidence * 100).toFixed(0)}%</span>}
                   </div>
                   
-                  <h3 className="mb-4 text-2xl text-white font-bold tracking-tight">{recommendation?.title}</h3>
-                  <p className="text-gray-300 mb-8 text-base leading-relaxed">{recommendation?.content}</p>
+                  <h3 className="demo-mb-4 demo-text-2xl demo-text-white demo-font-bold demo-tracking-tight">{recommendation?.title}</h3>
+                  <p className="demo-text-gray-300 demo-mb-8 demo-text-base demo-leading-relaxed">{recommendation?.content}</p>
                   
-                  <div className="flex justify-between items-center border-t border-gray-700/50 pt-5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-onto flex items-center justify-center text-[#0a1628] font-bold text-lg shadow-lg">
+                  <div className="demo-flex demo-justify-between demo-items-center demo-border-t demo-border-gray-700/50 demo-pt-5">
+                    <div className="demo-flex demo-items-center demo-gap-3">
+                      <div className="demo-w-10 demo-h-10 demo-rounded-full demo-bg-onto demo-flex demo-items-center demo-justify-center demo-text-dark demo-font-bold demo-text-lg demo-shadow-lg">
                         {recommendation?.author?.charAt(0)}
                       </div>
                       <div>
-                        <div className="text-[10px] text-gray-400 uppercase tracking-wider">Ficha extraída de</div>
-                        <div className="text-sm font-semibold text-white">{recommendation?.author}</div>
+                        <div className="text-[10px] demo-text-gray-400 demo-uppercase demo-tracking-wider">Ficha extraída de</div>
+                        <div className="demo-text-sm demo-font-semibold demo-text-white">{recommendation?.author}</div>
                       </div>
                     </div>
-                    <button className="bg-platzi text-[#0a1628] hover:bg-white hover:text-[#0a1628] font-bold py-2.5 px-6 rounded-lg transition-all duration-300 transform hover:scale-105" onClick={togglePlay}>
+                    <button className="demo-bg-platzi demo-text-dark hover:bg-white hover:demo-text-dark demo-font-bold demo-py-2.5 demo-px-6 demo-rounded-lg demo-transition-all demo-duration-300 transform demo-hover-scale" onClick={togglePlay}>
                       Entendido, continuar
                     </button>
                   </div>
@@ -148,30 +148,30 @@ const SmartPauseDemo = () => {
             )}
 
             {/* Custom Video Controls */}
-            <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-              <div className="w-full h-1.5 bg-white/20 rounded-full mb-4 cursor-pointer relative group/progress">
+            <div className="demo-absolute demo-bottom-0 demo-left-0 demo-w-full demo-p-4 demo-bg-gradient-fade demo-opacity-0 demo-group-hover:demo-opacity-100 transition-opacity demo-duration-300 demo-z-10">
+              <div className="demo-w-full h-1.5 bg-white/20 demo-rounded-full demo-mb-4 demo-cursor-pointer demo-relative demo-group-progress">
                 <div 
-                  className="absolute top-0 left-0 h-full bg-platzi rounded-full" 
+                  className="demo-absolute demo-top-0 demo-left-0 demo-h-full demo-bg-platzi demo-rounded-full" 
                   style={{ width: `${duration > 0 ? (progress / duration) * 100 : 0}%` }}
                 >
-                  <div className="absolute right-[-6px] top-[-4px] w-3.5 h-3.5 bg-white rounded-full scale-0 group-hover/progress:scale-100 transition-transform"></div>
+                  <div className="demo-absolute right-[-6px] top-[-4px] w-3.5 h-3.5 bg-white demo-rounded-full demo-scale-0 demo-group-hover-progress-scale-100 transition-transform"></div>
                 </div>
               </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-6">
-                  <button onClick={togglePlay} className="text-white hover:text-platzi transition-colors">
+              <div className="demo-flex demo-justify-between demo-items-center">
+                <div className="demo-flex demo-items-center demo-gap-6">
+                  <button onClick={togglePlay} className="demo-text-white hover:demo-text-platzi demo-transition-colors">
                     {isPlaying ? (
                       <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
                     ) : (
                       <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                     )}
                   </button>
-                  <div className="flex items-center gap-3 text-white hover:text-platzi cursor-pointer transition-colors">
+                  <div className="demo-flex demo-items-center demo-gap-3 demo-text-white hover:demo-text-platzi demo-cursor-pointer demo-transition-colors">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                   </div>
-                  <span className="text-sm font-mono text-gray-300">{formatTime(progress)} <span className="text-gray-500 mx-1">/</span> {formatTime(duration)}</span>
+                  <span className="demo-text-sm demo-font-mono demo-text-gray-300">{formatTime(progress)} <span className="demo-text-gray-500 demo-mx-1">/</span> {formatTime(duration)}</span>
                 </div>
-                <button className="text-white hover:text-platzi transition-colors">
+                <button className="demo-text-white hover:demo-text-platzi demo-transition-colors">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
                 </button>
               </div>
@@ -182,22 +182,22 @@ const SmartPauseDemo = () => {
           <SeciPipelineBar status={pipelineStatus} activeStep={activeStep} />
 
           {/* Platzi-style Tabs */}
-          <div className="bg-[#0a1628] border border-gray-800 rounded-xl flex flex-col overflow-hidden mt-2">
-            <div className="flex border-b border-gray-800 px-6 bg-[#0f213a]">
-               <button className="py-4 border-b-2 border-platzi text-platzi font-semibold mr-8 text-sm">Resumen de la Clase</button>
-               <button className="py-4 text-secondary hover:text-white mr-8 text-sm transition-colors flex items-center gap-2">
-                 Aportes <span className="bg-gray-800 text-xs px-2 py-0.5 rounded-full">24</span>
+          <div className="demo-bg-dark demo-border demo-border-gray-800 demo-rounded-xl demo-flex demo-flex-col demo-overflow-hidden demo-mt-2">
+            <div className="demo-flex demo-border-b demo-border-gray-800 demo-px-6 demo-bg-darker">
+               <button className="demo-py-4 demo-border-b-2 demo-border-platzi demo-text-platzi demo-font-semibold demo-mr-8 demo-text-sm">Resumen de la Clase</button>
+               <button className="demo-py-4 text-secondary hover:demo-text-white demo-mr-8 demo-text-sm demo-transition-colors demo-flex demo-items-center demo-gap-2">
+                 Aportes <span className="demo-bg-gray-800 demo-text-xs demo-px-2 demo-py-05 demo-rounded-full">24</span>
                </button>
-               <button className="py-4 text-secondary hover:text-white text-sm transition-colors flex items-center gap-2">
-                 Recursos <span className="bg-gray-800 text-xs px-2 py-0.5 rounded-full">3</span>
+               <button className="demo-py-4 text-secondary hover:demo-text-white demo-text-sm demo-transition-colors demo-flex demo-items-center demo-gap-2">
+                 Recursos <span className="demo-bg-gray-800 demo-text-xs demo-px-2 demo-py-05 demo-rounded-full">3</span>
                </button>
             </div>
-            <div className="p-8">
-               <h3 className="text-white text-2xl font-bold mb-4">Funciones de Costo y Overfitting</h3>
-               <p className="text-base text-gray-400 leading-relaxed mb-6 max-w-4xl">
+            <div className="demo-p-8">
+               <h3 className="demo-text-white demo-text-2xl demo-font-bold demo-mb-4">Funciones de Costo y Overfitting</h3>
+               <p className="demo-text-base demo-text-gray-400 demo-leading-relaxed demo-mb-6 demo-max-w-4xl">
                  En esta clase exploraremos las matemáticas detrás de las funciones de costo (Loss functions) y cómo los modelos de Machine Learning penalizan el error durante el entrenamiento. También veremos los peligros del Overfitting, cuando nuestro modelo memoriza los datos en lugar de generalizarlos.
                </p>
-               <div className="flex gap-3">
+               <div className="demo-flex demo-gap-3">
                  <Badge variant="ia">Machine Learning</Badge>
                  <Badge variant="onto">Matemáticas</Badge>
                </div>
@@ -207,7 +207,7 @@ const SmartPauseDemo = () => {
         </div>
 
         {/* Right Column: Playlist (25%) */}
-        <div className="flex flex-col relative" style={{ flex: '2.5', minWidth: '300px' }}>
+        <div className="demo-flex demo-flex-col demo-relative" style={{ flex: '2.5', minWidth: '300px' }}>
           <CourseSidebar />
         </div>
         

@@ -12,29 +12,29 @@ const CourseSidebar = () => {
   ];
 
   return (
-    <div className="flex flex-col h-full bg-[#0a1628] rounded-xl border border-gray-800 overflow-hidden">
-      <div className="p-4 border-b border-gray-800 bg-[#0f213a]">
-        <h3 className="text-white font-semibold text-sm">Contenido del Curso</h3>
-        <p className="text-xs text-secondary mt-1">Módulo 1: Fundamentos Matemáticos</p>
+    <div className="demo-flex demo-flex-col demo-h-full demo-bg-dark demo-rounded-xl demo-border demo-border-gray-800 demo-overflow-hidden">
+      <div className="demo-p-4 demo-border-b demo-border-gray-800 demo-bg-darker">
+        <h3 className="demo-text-white demo-font-semibold demo-text-sm">Contenido del Curso</h3>
+        <p className="demo-text-xs text-secondary demo-mt-1">Módulo 1: Fundamentos Matemáticos</p>
       </div>
       
-      <div className="flex-1 overflow-y-auto p-2" style={{ maxHeight: '600px' }}>
+      <div className="demo-flex-1 demo-overflow-y-auto demo-p-2" style={{ maxHeight: '600px' }}>
         {classes.map((cls) => (
           <div 
             key={cls.id} 
-            className={`p-3 mb-2 rounded-lg flex items-start gap-3 transition-colors ${
+            className={`demo-p-3 demo-mb-2 demo-rounded-lg demo-flex items-start demo-gap-3 demo-transition-colors ${
               cls.status === 'current' 
-                ? 'bg-[rgba(152,202,63,0.1)] border border-[rgba(152,202,63,0.3)]' 
-                : 'hover:bg-[#1a2b45]'
+                ? 'bg-[rgba(152,202,63,0.1)] demo-border border-[rgba(152,202,63,0.3)]' 
+                : 'demo-hover-bg-darker'
             }`}
           >
-            <div className="mt-1">
+            <div className="demo-mt-1">
               {cls.status === 'completed' && (
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent-platzi)"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
               )}
               {cls.status === 'current' && (
-                <div className="w-4 h-4 rounded-full border-2 border-platzi flex items-center justify-center">
-                  <div className="w-1.5 h-1.5 rounded-full bg-platzi"></div>
+                <div className="demo-w-4 demo-h-4 demo-rounded-full border-2 demo-border-platzi demo-flex demo-items-center demo-justify-center">
+                  <div className="w-1.5 h-1.5 demo-rounded-full demo-bg-platzi"></div>
                 </div>
               )}
               {cls.status === 'locked' && (
@@ -42,11 +42,11 @@ const CourseSidebar = () => {
               )}
             </div>
             
-            <div className="flex-1">
-              <h4 className={`text-sm ${cls.status === 'current' ? 'text-platzi font-semibold' : cls.status === 'locked' ? 'text-muted' : 'text-white'}`}>
+            <div className="demo-flex-1">
+              <h4 className={`demo-text-sm ${cls.status === 'current' ? 'demo-text-platzi demo-font-semibold' : cls.status === 'locked' ? 'text-muted' : 'demo-text-white'}`}>
                 {cls.id}. {cls.title}
               </h4>
-              <p className="text-xs text-secondary mt-1">{cls.duration}</p>
+              <p className="demo-text-xs text-secondary demo-mt-1">{cls.duration}</p>
             </div>
           </div>
         ))}

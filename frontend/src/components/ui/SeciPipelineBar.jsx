@@ -4,45 +4,45 @@ const SeciPipelineBar = ({ status, activeStep }) => {
   // status can be 'idle', 'processing', 'complete'
   
   const steps = [
-    { id: 1, label: 'Telemetría', desc: 'Detección de confusión', color: 'bg-red-500' },
-    { id: 2, label: 'IA Colaborativa', desc: 'Inferencia de perfil', color: 'bg-blue-400' },
-    { id: 3, label: 'Grafo Ontológico', desc: 'Búsqueda de material', color: 'bg-onto' },
-    { id: 4, label: 'Intervención', desc: 'Ficha generada', color: 'bg-platzi' },
+    { id: 1, label: 'Telemetría', desc: 'Detección de confusión', color: 'demo-bg-red' },
+    { id: 2, label: 'IA Colaborativa', desc: 'Inferencia de perfil', color: 'demo-bg-blue' },
+    { id: 3, label: 'Grafo Ontológico', desc: 'Búsqueda de material', color: 'demo-bg-onto' },
+    { id: 4, label: 'Intervención', desc: 'Ficha generada', color: 'demo-bg-platzi' },
   ];
 
   return (
-    <div className="bg-[#0a1628] border border-gray-800 rounded-xl p-4 mt-4 flex flex-col md:flex-row items-center gap-4 relative overflow-hidden">
+    <div className="demo-bg-dark demo-border demo-border-gray-800 demo-rounded-xl demo-p-4 demo-mt-4 demo-flex demo-flex-col md:flex-row demo-items-center demo-gap-4 demo-relative demo-overflow-hidden">
       
       {/* Background Pulse if processing */}
       {status === 'processing' && (
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" style={{ backgroundSize: '200% 100%' }}></div>
+        <div className="demo-absolute demo-inset-0 demo-bg-gradient-shimmer animate-shimmer" style={{ backgroundSize: '200% 100%' }}></div>
       )}
 
-      <div className="flex-shrink-0 flex flex-col justify-center items-center px-4 border-r border-gray-700/50 z-10">
-        <span className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-1">Motor SECI</span>
-        <div className="flex items-center gap-2">
-          <div className={`w-2 h-2 rounded-full ${status === 'idle' ? 'bg-gray-600' : status === 'processing' ? 'bg-yellow-400 animate-pulse' : 'bg-platzi'}`}></div>
-          <span className={`text-sm font-bold ${status === 'idle' ? 'text-gray-400' : status === 'processing' ? 'text-yellow-400' : 'text-platzi'}`}>
+      <div className="demo-flex-shrink-0 demo-flex demo-flex-col demo-justify-center demo-items-center demo-px-4 demo-border-r demo-border-gray-700/50 demo-z-10">
+        <span className="demo-text-xs demo-font-mono demo-text-gray-500 demo-uppercase demo-tracking-widest demo-mb-1">Motor SECI</span>
+        <div className="demo-flex demo-items-center demo-gap-2">
+          <div className={`demo-w-2 demo-h-2 demo-rounded-full ${status === 'idle' ? 'demo-bg-gray-600' : status === 'processing' ? 'demo-bg-yellow animate-pulse' : 'demo-bg-platzi'}`}></div>
+          <span className={`demo-text-sm demo-font-bold ${status === 'idle' ? 'demo-text-gray-400' : status === 'processing' ? 'demo-text-yellow' : 'demo-text-platzi'}`}>
             {status === 'idle' ? 'STANDBY' : status === 'processing' ? 'ANALIZANDO' : 'COMPLETADO'}
           </span>
         </div>
       </div>
 
-      <div className="flex-1 w-full grid grid-cols-4 gap-2 z-10">
+      <div className="demo-flex-1 demo-w-full demo-grid demo-grid-cols-4 demo-gap-2 demo-z-10">
         {steps.map((step) => {
           const isPast = activeStep > step.id;
           const isCurrent = activeStep === step.id;
           const isFuture = activeStep < step.id;
           
           return (
-            <div key={step.id} className={`flex flex-col p-2 rounded-lg transition-all duration-300 ${isCurrent ? 'bg-white/10' : ''}`}>
-              <div className="flex items-center gap-2 mb-2">
-                <div className={`h-1 flex-1 rounded-full overflow-hidden bg-gray-800`}>
-                  <div className={`h-full transition-all duration-1000 ease-in-out ${step.color} ${isPast || isCurrent ? 'w-full' : 'w-0'}`}></div>
+            <div key={step.id} className={`demo-flex demo-flex-col demo-p-2 demo-rounded-lg demo-transition-all demo-duration-300 ${isCurrent ? 'demo-bg-white-10' : ''}`}>
+              <div className="demo-flex demo-items-center demo-gap-2 demo-mb-2">
+                <div className={`h-1 demo-flex-1 demo-rounded-full demo-overflow-hidden demo-bg-gray-800`}>
+                  <div className={`demo-h-full demo-transition-all demo-duration-1000 demo-ease-in-out ${step.color} ${isPast || isCurrent ? 'demo-w-full' : 'w-0'}`}></div>
                 </div>
               </div>
-              <span className={`text-xs font-bold ${isPast || isCurrent ? 'text-white' : 'text-gray-500'}`}>{step.label}</span>
-              <span className={`text-[10px] ${isCurrent ? 'text-gray-300' : 'text-gray-600'}`}>{step.desc}</span>
+              <span className={`demo-text-xs demo-font-bold ${isPast || isCurrent ? 'demo-text-white' : 'demo-text-gray-500'}`}>{step.label}</span>
+              <span className={`text-[10px] ${isCurrent ? 'demo-text-gray-300' : 'demo-text-gray-600'}`}>{step.desc}</span>
             </div>
           );
         })}
