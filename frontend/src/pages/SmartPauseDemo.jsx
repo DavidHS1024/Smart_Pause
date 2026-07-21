@@ -6,7 +6,7 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import CourseSidebar from '../components/ui/CourseSidebar';
 import MyCoursesSidebar from '../components/ui/MyCoursesSidebar';
 import SeciPipelineBar from '../components/ui/SeciPipelineBar';
-
+import ReactPlayer from 'react-player';
 const formatTime = (seconds) => {
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
@@ -16,6 +16,7 @@ const formatTime = (seconds) => {
 const SmartPauseDemo = () => {
   const mainRef = useRef(null);
   const videoRef = useRef(null);
+  const playerRef = useRef(null);
   useScrollAnimation(mainRef);
   
   const [isPlaying, setIsPlaying] = useState(false);
@@ -30,24 +31,20 @@ const SmartPauseDemo = () => {
   const [hasTriggered, setHasTriggered] = useState(false);
 
   // Handle Video Time Update
-  const handleTimeUpdate = () => {
-    if (!videoRef.current) return;
-    const current = videoRef.current.currentTime;
+  const handleTimeUpdate = (state) => {
+    const current = state.playedSeconds;
     setProgress(current);
     
     // Simulate Smart Pause trigger at 15 seconds (representing 30% of confusion)
     if (current >= 15 && !hasTriggered) {
       setHasTriggered(true);
-      videoRef.current.pause();
       setIsPlaying(false);
       triggerSmartPause();
     }
   };
 
-  const handleLoadedMetadata = () => {
-    if (videoRef.current) {
-      setDuration(videoRef.current.duration);
-    }
+  const handleLoadedMetadata = (duration) => {
+    setDuration(duration);
   };
 
   const triggerSmartPause = () => {
@@ -74,19 +71,12 @@ const SmartPauseDemo = () => {
   };
 
   const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-      
-      if (showPopup) {
-        setShowPopup(false);
-        setPipelineStatus('idle');
-        setActiveStep(0);
-      }
+    setIsPlaying(!isPlaying);
+    
+    if (showPopup) {
+      setShowPopup(false);
+      setPipelineStatus('idle');
+      setActiveStep(0);
     }
   };
 
@@ -106,14 +96,23 @@ const SmartPauseDemo = () => {
           {/* Real Video Player */}
           <div className="demo-relative demo-w-full demo-bg-black demo-rounded-xl demo-overflow-hidden demo-border demo-border-gray-800 demo-shadow-2xl demo-group">
             
-            <video 
-              ref={videoRef}
-              className="demo-w-full demo-aspect-video demo-object-cover"
-              src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-              onTimeUpdate={handleTimeUpdate}
-              onLoadedMetadata={handleLoadedMetadata}
-              onEnded={() => setIsPlaying(false)}
-            />
+            <div className="demo-w-full demo-aspect-video">
+              <ReactPlayer
+                ref={playerRef}
+                url="https://www.youtube.com/watch?v=N_GqMjuWKCQ"
+                width="100%"
+                height="100%"
+                playing={isPlaying}
+                onProgress={handleTimeUpdate}
+                onDuration={handleLoadedMetadata}
+                onEnded={() => setIsPlaying(false)}
+                config={{
+                  youtube: {
+                    playerVars: { showinfo: 0, controls: 0, rel: 0, modestbranding: 1 }
+                  }
+                }}
+              />
+            </div>
 
             {/* Smart Pause Overlay */}
             {showPopup && (
@@ -184,11 +183,11 @@ const SmartPauseDemo = () => {
           {/* Platzi-style Tabs */}
           <div className="demo-bg-dark demo-border demo-border-gray-800 demo-rounded-xl demo-flex demo-flex-col demo-overflow-hidden demo-mt-2">
             <div className="demo-flex demo-border-b demo-border-gray-800 demo-px-6 demo-bg-darker">
-               <button className="demo-py-4 demo-border-b-2 demo-border-platzi demo-text-platzi demo-font-semibold demo-mr-8 demo-text-sm">Resumen de la Clase</button>
-               <button className="demo-py-4 text-secondary hover:demo-text-white demo-mr-8 demo-text-sm demo-transition-colors demo-flex demo-items-center demo-gap-2">
+               <button className="demo-reset-btn demo-py-4 demo-border-b-2 demo-border-platzi demo-text-platzi demo-font-semibold demo-mr-8 demo-text-sm">Resumen de la Clase</button>
+               <button className="demo-reset-btn demo-border-none demo-py-4 text-secondary hover:demo-text-white demo-mr-8 demo-text-sm demo-transition-colors demo-flex demo-items-center demo-gap-2">
                  Aportes <span className="demo-bg-gray-800 demo-text-xs demo-px-2 demo-py-05 demo-rounded-full">24</span>
                </button>
-               <button className="demo-py-4 text-secondary hover:demo-text-white demo-text-sm demo-transition-colors demo-flex demo-items-center demo-gap-2">
+               <button className="demo-reset-btn demo-border-none demo-py-4 text-secondary hover:demo-text-white demo-text-sm demo-transition-colors demo-flex demo-items-center demo-gap-2">
                  Recursos <span className="demo-bg-gray-800 demo-text-xs demo-px-2 demo-py-05 demo-rounded-full">3</span>
                </button>
             </div>

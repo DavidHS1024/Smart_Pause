@@ -36,7 +36,7 @@ useState(false);
 
         {/* User Profile (Sofia) */}
         <div className="demo-flex demo-items-center demo-gap-3 demo-ml-auto demo-cursor-pointer hover:demo-bg-white-5 demo-p-2 demo-rounded-lg demo-transition-colors">
-          <div className="text-right demo-hidden md:demo-block">
+          <div className="text-right demo-hidden demo-md-block">
             <div className="demo-text-sm demo-font-semibold demo-text-white">Sofía Martínez</div>
             <div className="demo-text-xs demo-text-platzi">12,450 puntos</div>
           </div>

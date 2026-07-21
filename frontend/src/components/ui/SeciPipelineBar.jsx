@@ -4,10 +4,10 @@ const SeciPipelineBar = ({ status, activeStep }) => {
   // status can be 'idle', 'processing', 'complete'
   
   const steps = [
-    { id: 1, label: 'Telemetría', desc: 'Detección de confusión', color: 'demo-bg-red' },
-    { id: 2, label: 'IA Colaborativa', desc: 'Inferencia de perfil', color: 'demo-bg-blue' },
-    { id: 3, label: 'Grafo Ontológico', desc: 'Búsqueda de material', color: 'demo-bg-onto' },
-    { id: 4, label: 'Intervención', desc: 'Ficha generada', color: 'demo-bg-platzi' },
+    { id: 1, label: 'Telemetría', desc: 'Detección de estancamiento temporal > 15s sin avance.', color: 'demo-bg-red' },
+    { id: 2, label: 'IA Colaborativa', desc: 'Inferencia de perfil: Sofía necesita enfoque de negocio.', color: 'demo-bg-blue' },
+    { id: 3, label: 'Grafo Ontológico', desc: 'Búsqueda de analogías en la ontología del curso.', color: 'demo-bg-onto' },
+    { id: 4, label: 'Intervención', desc: 'Generación de la Tarjeta de Conocimiento (Knowledge Card).', color: 'demo-bg-platzi' },
   ];
 
   return (
@@ -42,7 +42,7 @@ const SeciPipelineBar = ({ status, activeStep }) => {
                 </div>
               </div>
               <span className={`demo-text-xs demo-font-bold ${isPast || isCurrent ? 'demo-text-white' : 'demo-text-gray-500'}`}>{step.label}</span>
-              <span className={`text-[10px] ${isCurrent ? 'demo-text-gray-300' : 'demo-text-gray-600'}`}>{step.desc}</span>
+              <span className={`text-[10px] ${isCurrent ? 'demo-text-gray-300' : 'demo-text-gray-600'} demo-leading-relaxed demo-mt-1`}>{step.desc}</span>
             </div>
           );
         })}

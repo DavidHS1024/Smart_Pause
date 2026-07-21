@@ -207,3 +207,8 @@
 .demo-bg-gradient-platzi { background: linear-gradient(to right, #98ca3f, #00e5ff); }
 .demo-bg-gradient-shimmer { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); background-size: 200% 100%; }
 .demo-bg-gradient-fade { background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.5), transparent); }
+
+/* Reset default button styles */
+.demo-reset-btn { background: transparent; border: none; padding: 0; margin: 0; outline: none; color: inherit; font-family: inherit; font-size: inherit; text-align: left; }
+.demo-reset-btn:focus { outline: none; }
+.demo-border-none { border: none; }
