@@ -4,195 +4,200 @@ import Badge from '../components/ui/Badge';
 import { RecommendationsAPI } from '../services/api';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import CourseSidebar from '../components/ui/CourseSidebar';
-import SeciFlowOverlay from '../components/ui/SeciFlowOverlay';
+import MyCoursesSidebar from '../components/ui/MyCoursesSidebar';
+import SeciPipelineBar from '../components/ui/SeciPipelineBar';
 
-const formatTime = (percentage) => {
-  const totalSeconds = (percentage / 100) * 600; // 10 minutes video = 600s
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = Math.floor(totalSeconds % 60);
-  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+const formatTime = (seconds) => {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 };
 
 const SmartPauseDemo = () => {
   const mainRef = useRef(null);
+  const videoRef = useRef(null);
   useScrollAnimation(mainRef);
+  
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+  
+  const [pipelineStatus, setPipelineStatus] = useState('idle'); // idle, processing, complete
+  const [activeStep, setActiveStep] = useState(0);
+  
   const [showPopup, setShowPopup] = useState(false);
   const [recommendation, setRecommendation] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [hasTriggered, setHasTriggered] = useState(false);
 
-  // Simular la pausa inteligente a los 30% de progreso
-  useEffect(() => {
-    let interval;
-    if (isPlaying) {
-      interval = setInterval(() => {
-        setProgress(p => {
-          const next = p + 0.5;
-          if (next >= 30 && p < 30) {
-            triggerSmartPause();
-            setIsPlaying(false);
-          }
-          return next > 100 ? 100 : next;
-        });
-      }, 100);
-    }
-    return () => clearInterval(interval);
-  }, [isPlaying]);
-
-  const triggerSmartPause = async () => {
-    setLoading(true);
-    setShowPopup(true);
+  // Handle Video Time Update
+  const handleTimeUpdate = () => {
+    if (!videoRef.current) return;
+    const current = videoRef.current.currentTime;
+    setProgress(current);
     
-    // Simular llamada a la API
-    try {
-      const data = await RecommendationsAPI.triggerSmartPause({
-        student_id: "11111111-1111-1111-1111-111111111111",
-        events: [
-          { event_type: "pause", video_timestamp: 120, metadata: { context: "overfitting math" } },
-          { event_type: "test_fail", concept_id: "overfitting" }
-        ]
-      });
-      setRecommendation(data.intervention);
-    } catch (e) {
-      // Fallback estático
-      setTimeout(() => {
-        setRecommendation({
-          type: "knowledge_card",
-          title: "Analogía de Negocio: Overfitting",
-          content: "Imagina que contratas a un vendedor que memoriza el guion perfecto para 5 clientes, pero no sabe qué decirle a un cliente nuevo. Eso es el Overfitting: el modelo memoriza los datos de entrenamiento pero falla al generalizar.",
-          author: "Frida Ruh",
-          confidence: 0.92
-        });
-        setLoading(false);
-      }, 1500);
+    // Simulate Smart Pause trigger at 15 seconds (representing 30% of confusion)
+    if (current >= 15 && !hasTriggered) {
+      setHasTriggered(true);
+      videoRef.current.pause();
+      setIsPlaying(false);
+      triggerSmartPause();
     }
   };
 
-  const handlePlayPause = () => {
-    if (progress >= 100) setProgress(0);
-    setIsPlaying(!isPlaying);
-    if (showPopup) {
-      setShowPopup(false);
-      setRecommendation(null);
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration);
+    }
+  };
+
+  const triggerSmartPause = () => {
+    setPipelineStatus('processing');
+    setActiveStep(1); // Telemetría
+    
+    // Simulate SECI Engine thinking process
+    setTimeout(() => setActiveStep(2), 1000); // IA Colaborativa
+    setTimeout(() => setActiveStep(3), 2500); // Grafo Ontológico
+    setTimeout(() => {
+      setActiveStep(4); // Ficha Generada
+      setPipelineStatus('complete');
+      setShowPopup(true);
+      
+      // Static fallback recommendation logic
+      setRecommendation({
+        type: "knowledge_card",
+        title: "Analogía de Negocio: Overfitting",
+        content: "Imagina que contratas a un vendedor que memoriza el guion perfecto para 5 clientes, pero no sabe qué decirle a un cliente nuevo. Eso es el Overfitting: el modelo memoriza los datos de entrenamiento pero falla al generalizar.",
+        author: "Frida Ruh",
+        confidence: 0.92
+      });
+    }, 4000);
+  };
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+      
+      if (showPopup) {
+        setShowPopup(false);
+        setPipelineStatus('idle');
+        setActiveStep(0);
+      }
     }
   };
 
   return (
-    <div ref={mainRef} className="container mx-auto px-4" style={{ paddingTop: '100px', paddingBottom: '60px', minHeight: '100vh' }}>
-      <div className="mb-8 gsap-fade-up">
-        <h2 className="text-gradient text-3xl font-bold">Smart Pause en Acción</h2>
-        <p className="text-secondary mt-2">Plataforma Simulada. Perfil de estudiante: Sofía (Pragmática / No-Code).</p>
-      </div>
-
-      <div className="flex flex-col lg:flex-row gap-6 w-full gsap-fade-up delay-1">
+    <div ref={mainRef} className="container mx-auto px-4" style={{ paddingTop: '100px', paddingBottom: '60px', minHeight: '100vh', maxWidth: '1600px' }}>
+      
+      <div className="flex flex-col xl:flex-row gap-6 w-full gsap-fade-up">
         
-        {/* Left Column: Video and Tabs */}
-        <div className="flex flex-col gap-6" style={{ flex: '7' }}>
+        {/* Left Column: My Courses (20%) */}
+        <div className="hidden xl:flex flex-col gap-6" style={{ flex: '2', minWidth: '250px' }}>
+          <MyCoursesSidebar />
+        </div>
+        
+        {/* Middle Column: Video and Content (55%) */}
+        <div className="flex flex-col gap-6" style={{ flex: '5.5' }}>
           
-          {/* Video Player Mock */}
-          <div style={{ 
-            width: '100%', 
-            aspectRatio: '16/9', 
-            backgroundColor: '#000', 
-            borderRadius: 'var(--radius-lg)',
-            position: 'relative',
-            overflow: 'hidden',
-            border: '1px solid var(--bg-surface)'
-          }}>
-            {/* Video Placeholder Content */}
-            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
-              <h3 style={{ color: '#fff', opacity: 0.3, fontSize: '2rem', fontWeight: 'bold' }}>Platzi Simulador</h3>
-              <p style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>Módulo 1 - Clase 4</p>
-            </div>
+          {/* Real Video Player */}
+          <div className="relative w-full bg-black rounded-xl overflow-hidden border border-gray-800 shadow-2xl group">
+            
+            <video 
+              ref={videoRef}
+              className="w-full aspect-video object-cover"
+              src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+              onTimeUpdate={handleTimeUpdate}
+              onLoadedMetadata={handleLoadedMetadata}
+              onEnded={() => setIsPlaying(false)}
+            />
 
             {/* Smart Pause Overlay */}
             {showPopup && (
-              <div style={{
-                position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-                background: 'rgba(10, 22, 40, 0.85)',
-                backdropFilter: 'blur(8px)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                padding: 'var(--space-6)',
-                zIndex: 10
-              }}>
-                <GlassCard className="animate-fade-in-up shadow-[0_0_40px_rgba(152,202,63,0.15)]" style={{ width: '100%', maxWidth: '500px', border: '1px solid var(--accent-platzi)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
+              <div className="absolute inset-0 bg-[#0a1628]/90 backdrop-blur-md flex items-center justify-center p-6 z-20">
+                <GlassCard className="animate-fade-in-up w-full max-w-lg border border-platzi/50 shadow-[0_0_50px_rgba(152,202,63,0.15)] relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-platzi to-ia"></div>
+                  
+                  <div className="flex justify-between mb-4">
                     <Badge variant="platzi">💡 SMART PAUSE DETECTADO</Badge>
-                    {recommendation && <span className="text-xs text-muted">Confianza: {(recommendation.confidence * 100).toFixed(0)}%</span>}
+                    {recommendation && <span className="text-xs text-platzi font-mono">Confianza: {(recommendation.confidence * 100).toFixed(0)}%</span>}
                   </div>
                   
-                  {loading && !recommendation ? (
-                    <div className="text-center py-10">
-                      <div className="animate-pulse text-ia mb-4">Esperando respuesta del Motor Híbrido...</div>
-                      <div className="text-xs text-secondary">Revisando grafo ontológico en tiempo real.</div>
-                    </div>
-                  ) : (
-                    <>
-                      <h3 className="mb-4 text-xl text-white font-bold">{recommendation?.title}</h3>
-                      <p className="text-gray-300 mb-6 text-sm leading-relaxed">{recommendation?.content}</p>
-                      <div className="flex justify-between items-center border-t border-gray-800 pt-4">
-                        <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-full bg-onto flex items-center justify-center text-[#0a1628] font-bold text-xs">
-                            {recommendation?.author?.charAt(0)}
-                          </div>
-                          <div className="text-xs text-muted">
-                            Ficha de: <span className="text-primary font-semibold">{recommendation?.author}</span>
-                          </div>
-                        </div>
-                        <button className="bg-platzi text-[#0a1628] hover:bg-[#a8e046] font-bold py-2 px-4 rounded transition-colors text-sm" onClick={handlePlayPause}>
-                          Entendido, continuar
-                        </button>
+                  <h3 className="mb-4 text-2xl text-white font-bold tracking-tight">{recommendation?.title}</h3>
+                  <p className="text-gray-300 mb-8 text-base leading-relaxed">{recommendation?.content}</p>
+                  
+                  <div className="flex justify-between items-center border-t border-gray-700/50 pt-5">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-onto flex items-center justify-center text-[#0a1628] font-bold text-lg shadow-lg">
+                        {recommendation?.author?.charAt(0)}
                       </div>
-                    </>
-                  )}
+                      <div>
+                        <div className="text-[10px] text-gray-400 uppercase tracking-wider">Ficha extraída de</div>
+                        <div className="text-sm font-semibold text-white">{recommendation?.author}</div>
+                      </div>
+                    </div>
+                    <button className="bg-platzi text-[#0a1628] hover:bg-white hover:text-[#0a1628] font-bold py-2.5 px-6 rounded-lg transition-all duration-300 transform hover:scale-105" onClick={togglePlay}>
+                      Entendido, continuar
+                    </button>
+                  </div>
                 </GlassCard>
               </div>
             )}
 
-            {/* Controls */}
-            <div style={{
-              position: 'absolute', bottom: 0, left: 0, width: '100%',
-              padding: '16px', background: 'linear-gradient(transparent, rgba(0,0,0,0.9))'
-            }}>
-              <div style={{ width: '100%', height: '4px', background: 'rgba(255,255,255,0.2)', borderRadius: '2px', marginBottom: '16px', cursor: 'pointer' }}>
-                <div style={{ width: `${progress}%`, height: '100%', background: 'var(--accent-platzi)', borderRadius: '2px', position: 'relative' }}>
-                  <div style={{ position: 'absolute', right: '-6px', top: '-4px', width: '12px', height: '12px', background: '#fff', borderRadius: '50%' }}></div>
+            {/* Custom Video Controls */}
+            <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+              <div className="w-full h-1.5 bg-white/20 rounded-full mb-4 cursor-pointer relative group/progress">
+                <div 
+                  className="absolute top-0 left-0 h-full bg-platzi rounded-full" 
+                  style={{ width: `${duration > 0 ? (progress / duration) * 100 : 0}%` }}
+                >
+                  <div className="absolute right-[-6px] top-[-4px] w-3.5 h-3.5 bg-white rounded-full scale-0 group-hover/progress:scale-100 transition-transform"></div>
                 </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  <button onClick={handlePlayPause} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-6">
+                  <button onClick={togglePlay} className="text-white hover:text-platzi transition-colors">
                     {isPlaying ? (
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
                     ) : (
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                     )}
                   </button>
-                  <span className="text-sm font-mono text-gray-300">{formatTime(progress)} / 10:00</span>
+                  <div className="flex items-center gap-3 text-white hover:text-platzi cursor-pointer transition-colors">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                  </div>
+                  <span className="text-sm font-mono text-gray-300">{formatTime(progress)} <span className="text-gray-500 mx-1">/</span> {formatTime(duration)}</span>
                 </div>
-                
-                <div className="flex gap-4 text-gray-400">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                <button className="text-white hover:text-platzi transition-colors">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-                </div>
+                </button>
               </div>
             </div>
           </div>
 
+          {/* SECI Pipeline Real-time visualizer */}
+          <SeciPipelineBar status={pipelineStatus} activeStep={activeStep} />
+
           {/* Platzi-style Tabs */}
-          <div className="bg-[#0a1628] border border-gray-800 rounded-xl flex flex-col overflow-hidden">
+          <div className="bg-[#0a1628] border border-gray-800 rounded-xl flex flex-col overflow-hidden mt-2">
             <div className="flex border-b border-gray-800 px-6 bg-[#0f213a]">
-               <button className="py-4 border-b-2 border-platzi text-platzi font-semibold mr-6 text-sm">Resumen de la Clase</button>
-               <button className="py-4 text-secondary hover:text-white mr-6 text-sm transition-colors">Aportes (24)</button>
-               <button className="py-4 text-secondary hover:text-white text-sm transition-colors">Recursos (3)</button>
+               <button className="py-4 border-b-2 border-platzi text-platzi font-semibold mr-8 text-sm">Resumen de la Clase</button>
+               <button className="py-4 text-secondary hover:text-white mr-8 text-sm transition-colors flex items-center gap-2">
+                 Aportes <span className="bg-gray-800 text-xs px-2 py-0.5 rounded-full">24</span>
+               </button>
+               <button className="py-4 text-secondary hover:text-white text-sm transition-colors flex items-center gap-2">
+                 Recursos <span className="bg-gray-800 text-xs px-2 py-0.5 rounded-full">3</span>
+               </button>
             </div>
-            <div className="p-6">
-               <h3 className="text-white text-xl font-bold mb-3">Funciones de Costo y Overfitting</h3>
-               <p className="text-sm text-gray-400 leading-relaxed mb-4">
+            <div className="p-8">
+               <h3 className="text-white text-2xl font-bold mb-4">Funciones de Costo y Overfitting</h3>
+               <p className="text-base text-gray-400 leading-relaxed mb-6 max-w-4xl">
                  En esta clase exploraremos las matemáticas detrás de las funciones de costo (Loss functions) y cómo los modelos de Machine Learning penalizan el error durante el entrenamiento. También veremos los peligros del Overfitting, cuando nuestro modelo memoriza los datos en lugar de generalizarlos.
                </p>
-               <div className="flex gap-2">
+               <div className="flex gap-3">
                  <Badge variant="ia">Machine Learning</Badge>
                  <Badge variant="onto">Matemáticas</Badge>
                </div>
@@ -201,10 +206,9 @@ const SmartPauseDemo = () => {
 
         </div>
 
-        {/* Right Column: Sidebar and Flow Overlay */}
-        <div className="flex flex-col relative" style={{ flex: '3', minHeight: '500px' }}>
+        {/* Right Column: Playlist (25%) */}
+        <div className="flex flex-col relative" style={{ flex: '2.5', minWidth: '300px' }}>
           <CourseSidebar />
-          <SeciFlowOverlay isActive={showPopup} />
         </div>
         
       </div>

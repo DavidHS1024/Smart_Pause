@@ -23,6 +23,11 @@
   to { transform: rotate(360deg); }
 }
 
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 .animate-fade-in-up {
   animation: fadeInUp 0.8s ease forwards;
 }
@@ -33,6 +38,10 @@
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 3s infinite linear;
 }
 
 .delay-1 { animation-delay: 100ms; }
