@@ -8,7 +8,9 @@ from uuid import UUID
 from app.core.database import get_db
 from app.schemas.student import StudentResponse, StudentDetail
 from app.models.student import Student
-from app.models.learning import KnowledgeCard, Concept, Event
+from app.models.knowledge_card import KnowledgeCard
+from app.models.concept import Concept
+from app.models.telemetry import LearningEvent
 
 router = APIRouter(prefix="/api/students", tags=["Estudiantes"])
 
@@ -47,12 +49,12 @@ async def register_event(
     db: AsyncSession = Depends(get_db)
 ):
     """Registra un evento de aprendizaje."""
-    new_event = Event(
+    new_event = LearningEvent(
         student_id=student_id,
         event_type=event_type,
         learning_object_id=learning_object_id,
         duration_seconds=duration_seconds,
-        metadata_=metadata
+        event_metadata=metadata
     )
     db.add(new_event)
     await db.commit()
